@@ -24,3 +24,4 @@ jobs:
         chmod 600 deploy_key
         rsync  --checksum -avz -e "ssh -p $PORT -i deploy_key" --delete ./ $USER@$HOST:/home/txtmemo/txtmemo-sub.com/Todo
         rm -f deploy_key
+        
