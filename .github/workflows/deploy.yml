@@ -13,13 +13,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Setup known_hosts
+    - name: Setup SSH and known_hosts
       env:
         SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
       run: |
         mkdir -p ~/.ssh
         echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
         chmod 644 ~/.ssh/known_hosts
+        echo "$DEPLOY_KEY" > deploy_key
+        chmod 600 deploy_key
 
     - name: Deploy to server
       env:
@@ -28,8 +30,5 @@ jobs:
         USER: txtmemo
         PORT: 10022
       run: |
-        echo "$DEPLOY_KEY" > deploy_key
-        chmod 600 deploy_key
-        ssh -o UserKnownHostsFile=~/.ssh/known_hosts -i deploy_key $USER@$HOST -p $PORT -v exit
         rsync -avz -e "ssh -p $PORT -i deploy_key" ./ $USER@$HOST:/home/txtmemo/txtmemo-sub.com/Todo
         rm -f deploy_key
