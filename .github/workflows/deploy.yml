@@ -22,5 +22,5 @@ jobs:
       run: |
         echo "$DEPLOY_KEY" > deploy_key
         chmod 600 deploy_key
-        rsync -avz -e "ssh -p $PORT -i deploy_key" --delete ./ $txtmemo@$.xserver.jp:/home/txtmemo/txtmemo-sub.com/Todo
+        rsync  --checksum -avz -e "ssh -p $PORT -i deploy_key" --delete ./ $txtmemo@$.xserver.jp:/home/txtmemo/txtmemo-sub.com/Todo
         rm -f deploy_key
