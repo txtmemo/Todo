@@ -18,8 +18,8 @@ jobs:
         DEPLOY_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         HOST: sv14731.xserver.jp
       run: |
-        mkdir -p ~/.ssh
-        echo "Created .ssh directory"
+        mkdir -p ~/ssh_dir
+        echo "Created ssh_dir directory"
         ssh-keyscan $HOST || exit 1
         echo "Ran ssh-keyscan"
         ssh-keyscan $HOST > ~/.ssh/known_hosts
