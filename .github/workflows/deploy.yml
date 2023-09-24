@@ -1,0 +1,26 @@
+name: Deploy to Production Server
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy to server
+      env:
+        DEPLOY_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        HOST: sv14731.xserver.jp
+        USER: txtmemo
+        PORT: 10022
+      run: |
+        echo "$DEPLOY_KEY" > deploy_key
+        chmod 600 deploy_key
+        rsync -avz -e "ssh -p $PORT -i deploy_key" --delete ./ $txtmemo@$.xserver.jp:/home/txtmemo/txtmemo-sub.com/Todo
+        rm -f deploy_key
