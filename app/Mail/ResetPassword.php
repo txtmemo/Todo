@@ -31,7 +31,7 @@ class ResetPassword extends Mailable
     public function build()
     {
         return $this
-            ->subject('パスワード再設定')
+            ->subject('Todoアプリ パスワード再設定リンクのお知らせ')
             ->view('mail.password-reset');
     }
 }
