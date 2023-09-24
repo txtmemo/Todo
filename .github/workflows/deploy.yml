@@ -21,17 +21,15 @@ jobs:
         echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
         chmod 644 ~/.ssh/known_hosts
 
-    - name: Deploy to server
-      env:
-        DEPLOY_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        HOST: sv14731.xserver.jp
-        USER: txtmemo
-        PORT: 10022
-      run: |
-        echo "$DEPLOY_KEY" > deploy_key
-        chmod 600 deploy_key
-        # SSH接続のテスト
-        ssh -i deploy_key $USER@$HOST -p $PORT -v exit
-        # 実際のrsyncコマンドでデプロイ
-        rsync -avz -e "ssh -p $PORT -i deploy_key" ./ $USER@$HOST:/home/txtmemo/txtmemo-sub.com/Todo
-        rm -f deploy_key
+     name: Deploy to server
+     env:
+       DEPLOY_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+       HOST: sv14731.xserver.jp
+       USER: txtmemo
+       PORT: 10022
+    run: |
+      echo "$DEPLOY_KEY" > deploy_key
+      chmod 600 deploy_key
+      ssh -o UserKnownHostsFile=~/.ssh/known_hosts -i deploy_key $USER@$HOST -p $PORT -v exit
+      rsync -avz -e "ssh -p $PORT -i deploy_key" ./ $USER@$HOST:/home/txtmemo/txtmemo-sub.com/Todo
+      rm -f deploy_key
