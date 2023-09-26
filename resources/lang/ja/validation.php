@@ -154,7 +154,8 @@ return [
     */
 
     'attributes' => [
-        'email' => 'メールアドレス'
+        'email' => 'メールアドレス',
+        'password' => 'パスワード'
     ],
 
 ];
