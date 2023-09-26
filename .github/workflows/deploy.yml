@@ -13,30 +13,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Setup SSH and known_hosts
+    - name: Deploy to server
       env:
         DEPLOY_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         HOST: sv14731.xserver.jp
-      run: |
-        mkdir -p ~/ssh_dir
-        echo "Created ssh_dir directory"
-        ssh-keyscan $HOST || exit 1
-        echo "Ran ssh-keyscan"
-        ssh-keyscan $HOST > ~/.ssh/known_hosts
-        echo "Added host to known_hosts"
-        chmod 644 ~/.ssh/known_hosts
-        echo "Set permissions for known_hosts"
-        echo "$DEPLOY_KEY" > deploy_key
-        echo "Set deploy key"
-        chmod 600 deploy_key
-        echo "Changed permissions for deploy key"
-
-    - name: Deploy to server
-      env:
         USER: txtmemo
         PORT: 10022
       run: |
-        rsync --checksum -avz -e "ssh -p $PORT -i deploy_key" ./ $USER@$HOST:/home/txtmemo/txtmemo-sub.com/Todo
-        rm -f deploy_key
-
-      
+        echo "$DEPLOY_KEY" > deploy_key
+        chmod 600 deploy_key
+        # SSH接続のテスト
+        ssh -o StrictHostKeyChecking=no -i deploy_key $USER@$HOST -p $PORT -v exit
+        # 実際のrsyncコマンドでデプロイ
+        rsync --checksum -az -e "ssh -p $PORT -i deploy_key" ./ $USER@$HOST:/home/txtmemo/txtmemo-sub.com/Todo
+        rm -f deploy_keyz
