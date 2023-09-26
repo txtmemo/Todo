@@ -17,7 +17,7 @@ jobs:
       env:
         DEPLOY_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         HOST: ${{ secrets.SERVER_HOST }}
-        USER: ${{ secrets.SERVER_USERNAME }}
+        USER: txtmemo
         PORT: ${{ secrets.SSH_PORT }}
       run: |
         echo "$DEPLOY_KEY" > deploy_key
