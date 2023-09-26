@@ -13,6 +13,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    # PHPのセットアップ
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1' # ここで目的のPHPバージョンを設定します
+
     - name: Deploy to server
       env:
         DEPLOY_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
