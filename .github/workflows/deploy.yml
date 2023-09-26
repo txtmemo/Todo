@@ -26,7 +26,7 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i deploy_key $USER@$HOST -p $PORT -v exit
         # 実際のrsyncコマンドでデプロイ
         rsync --checksum -avz -e "ssh -p $PORT -i deploy_key" ./ $USER@$HOST:/home/txtmemo/txtmemo-sub.com/Todo
-        cd ${{ secrets.SERVER_PROJECT_ROOT }}
+        cd txtmemo-sub/Todo
         php artisan cache:clear
         php artisan config:clear
         php artisan route:clear
