@@ -23,8 +23,10 @@ jobs:
         echo "$DEPLOY_KEY" > deploy_key
         chmod 600 deploy_key
         # SSH接続のテスト
-        #ssh -o StrictHostKeyChecking=no -i deploy_key $USER@$HOST -p $PORT -v exit
+        ssh -o StrictHostKeyChecking=no -i deploy_key $USER@$HOST -p $PORT -v exit
         # 実際のrsyncコマンドでデプロイ
         rsync --checksum -avz -e "ssh -p $PORT -i deploy_key" ./ $USER@$HOST:/home/txtmemo/txtmemo-sub.com/Todo
-        ssh -o StrictHostKeyChecking=no -i deploy_key $USER@$HOST -p $PORT "cd /home/txtmemo/txtmemo-sub.com/Todo && php artisan cache:clear"
+        ssh -o StrictHostKeyChecking=no -i deploy_key $USER@$HOST -p $PORT "which php"  # This should return the path to the PHP executable
+        ssh -o StrictHostKeyChecking=no -i deploy_key $USER@$HOST -p $PORT "/usr/bin/php -v"  # Use the returned path from the above command
+        ssh -o StrictHostKeyChecking=no -i deploy_key $USER@$HOST -p $PORT "cd /home/txtmemo/txtmemo-sub.com/Todo && /usr/bin/php artisan cache:clear"  # Use the path from the above command
         rm -f deploy_key
