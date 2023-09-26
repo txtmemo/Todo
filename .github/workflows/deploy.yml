@@ -17,8 +17,8 @@ jobs:
       env:
         DEPLOY_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         HOST: sv14731.xserver.jp
-        USER: txtmemo
-        PORT: 10022
+        USER: ${{ secrets.SERVER_USERNAME }}
+        PORT: ${{ secrets.SSH_PORT }}
       run: |
         echo "$DEPLOY_KEY" > deploy_key
         chmod 600 deploy_key
