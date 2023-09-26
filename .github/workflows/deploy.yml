@@ -16,7 +16,7 @@ jobs:
     - name: Deploy to server
       env:
         DEPLOY_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        HOST: sv14731.xserver.jp
+        HOST: ${{ secrets.SERVER_HOST }}
         USER: ${{ secrets.SERVER_USERNAME }}
         PORT: ${{ secrets.SSH_PORT }}
       run: |
